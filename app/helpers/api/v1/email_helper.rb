@@ -6,6 +6,13 @@ module Api::V1::EmailHelper
     }
   end
 
+  def bulk_email(senders, guests, subject, body, opts = {})
+    guests.map { |guest|
+      GenericMailer.bulkMailer(
+        senders, guest, subject, body, attachments: opts[:attachments])
+    }
+  end
+
   def gen_email_from_template(senders, guests, template, opts = {})
     # todo: allow for user-defined arguments in template
     # map filenames to urls and convert to struct for ease of access by mustache
