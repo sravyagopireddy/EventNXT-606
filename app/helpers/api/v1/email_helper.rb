@@ -91,9 +91,6 @@ module Api::V1::EmailHelper
 
     # render an email from template for each guest
     guests.map { |guest|
-      logger.debug "hey"
-      logger.debug guest
-      logger.debug guest.event
       subject = opts[:subject].nil? ? template.subject : opts[:subject]
       subject = Mustache.render(subject, event: guest.event, guest: guest)
 
