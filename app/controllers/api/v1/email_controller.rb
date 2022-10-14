@@ -7,7 +7,7 @@ class Api::V1::EmailController < Api::V1::ApiController
     guests = []
     for recipient in recipientsList do
       guest = Guest.where(event_id: params[:event_id], email: recipient).collect.to_a
-      guests.append(guest)
+      guests.push(guest.first)
     end
     guests.collect.to_a
     
@@ -18,9 +18,15 @@ class Api::V1::EmailController < Api::V1::ApiController
       [attachment.original_filename.to_s, File.read(attachment.tempfile)]
     }.to_h unless params[:attachments].nil?
 
-    outbox = bulk_email(senders, guests, params[:subject], params[:body], attachments: attachments)
-    
+    unless template.nil?
+      outbox = bulk_email_from_template(
+        senders, guests, template, attachments: attachments)
+    else
+      outbox = bulk_email(senders, guests, params[:subject], params[:body], attachments: attachments)
+    end
+
     outbox.each { |mail| mail.deliver_later }
+    guests.each{|guest| guest.update({ emailed_at: Time.now }) }
 
     render json: guests, only: [:email]
   end

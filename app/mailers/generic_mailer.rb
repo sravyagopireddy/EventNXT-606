@@ -7,9 +7,7 @@ class GenericMailer < ApplicationMailer
     }
     opts[:attachments].each { |filename, file| attachments[filename] = file } unless opts[:attachments].nil?
     
-    sendTo = recipients.map { |recipient|
-      email_address_with_name(recipient.email, recipient.full_name)
-    }
+    sendTo = email_address_with_name(recipients.email, recipients.full_name)
     
     mail(
       to: sendTo,
