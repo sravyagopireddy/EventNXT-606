@@ -276,27 +276,6 @@ var bulkEmailModal = document.getElementById('bulk-email')
     })
 </script>
 
-<body>
-  <h1>Hello, my name is <span id="name"></span></h1>
-  <script>
-    let name = "Nathan";
-    var bulkEmailModal = document.getElementById('bulk-emasil')
-    bulkEmailModal.addEventListener('show.bs.modal', function () {
-      var forms = document.querySelectorAll("[name=guest_display]");
-      var recipients = "";
-
-       for (var i=0, n=forms.length;i<n;i++) {
-        if (forms[i].elements['guest_selector'].checked) {
-          recipients += forms[i].elements['guest_email'].value
-        }
-       }
-    var modalInput = bulkEmailModal.querySelector('#email-to')
-    modalInput.value = recipients
-    })
-    
-  </script>
-</body>
-
 <!--<div id="form-div">
 <h3>Import Box Office Data</h3>
 <%= form_tag import_new_spreadsheet_path, multipart: true  do %> 
